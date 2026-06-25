@@ -75,14 +75,8 @@ function formatCount(value){
   return Number(value).toLocaleString("fr-FR");
 }
 
-function monthKey(date){
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-}
-
-function monthLabel(key){
-  const [year, month] = key.split("-").map(Number);
-  const date = new Date(year, month - 1, 1);
-  return date.toLocaleDateString("fr-FR", {month:"short", year:"numeric"}).replace(".", "");
+function dateLabel(date){
+  return date.toLocaleDateString("fr-FR", {day:"2-digit", month:"short", year:"numeric"}).replace(".", "");
 }
 
 async function loadData(){
@@ -104,7 +98,7 @@ async function loadData(){
   rows.sort((a,b) => a.date - b.date);
 
   renderStats(rows);
-  renderMonthlyChart(rows);
+  renderDailyChart(rows);
 }
 
 function renderStats(rows){
@@ -121,23 +115,17 @@ function renderStats(rows){
   document.getElementById("averageOdds").textContent = formatNumber(averageOdds, 2);
 }
 
-function renderMonthlyChart(rows){
-  const monthly = new Map();
+function renderDailyChart(rows){
   let cumulative = 0;
+  const labels = [];
+  const values = [];
 
   rows.forEach(row => {
     cumulative += row.profit;
-    const key = monthKey(row.date);
-    monthly.set(key, cumulative);
+    labels.push(dateLabel(row.date));
+    values.push(Number(cumulative.toFixed(2)));
   });
 
-  const data = [...monthly.entries()].map(([key, value]) => ({
-    label: monthLabel(key),
-    value: Number(value.toFixed(2))
-  }));
-
-  const labels = data.map(item => item.label);
-  const values = data.map(item => item.value);
   const lastValue = values[values.length - 1];
 
   const lastPointLabelPlugin = {
@@ -159,7 +147,7 @@ function renderMonthlyChart(rows){
     }
   };
 
-  const ctx = document.getElementById("monthlyChart");
+  const ctx = document.getElementById("dailyChart");
 
   if(chartInstance) chartInstance.destroy();
 
@@ -168,23 +156,36 @@ function renderMonthlyChart(rows){
     data:{
       labels,
       datasets:[{
+        label:"Profit cumulé",
         data:values,
         borderColor:"#123B2A",
         borderWidth:2,
         pointRadius:0,
-        pointHoverRadius:0,
-        tension:0.22,
+        pointHoverRadius:4,
+        pointHitRadius:12,
+        tension:0,
         fill:false
       }]
     },
     options:{
       responsive:true,
       maintainAspectRatio:false,
+      interaction:{mode:"index", intersect:false},
       animation:false,
-      layout:{padding:{top:34,right:28,bottom:4,left:0}},
+      layout:{padding:{top:34,right:28,bottom:8,left:0}},
       plugins:{
         legend:{display:false},
-        tooltip:{enabled:false}
+        tooltip:{
+          enabled:true,
+          backgroundColor:"#10100E",
+          titleColor:"#F3EEE4",
+          bodyColor:"#F3EEE4",
+          displayColors:false,
+          padding:12,
+          callbacks:{
+            label:(context) => `Profit cumulé : ${context.parsed.y >= 0 ? "+" : ""}${context.parsed.y.toFixed(2).replace(".", ",")}u`
+          }
+        }
       },
       scales:{
         x:{
@@ -192,7 +193,7 @@ function renderMonthlyChart(rows){
           ticks:{
             color:"#726D65",
             font:{family:"Fira Code", size:13, weight:"500"},
-            maxTicksLimit:6
+            maxTicksLimit:7
           },
           border:{display:false}
         },
