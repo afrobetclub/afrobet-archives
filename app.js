@@ -1,5 +1,6 @@
 let allRows = [];
 let chartInstance = null;
+let appliedStake = 1;
 
 function parseCSV(text){
   const rows = [];
@@ -33,29 +34,6 @@ function dateDisplay(v){
 function amountDisplay(v){
   const n = toNumber(v);
   return `${n > 0 ? "+" : ""}${n.toFixed(2).replace(".", ",")}`;
-}
-function getStakeSettings(){
-  return {
-    plan: document.getElementById("stakingPlan")?.value || "fixed",
-    startingBankroll: Math.max(0, toNumber(document.getElementById("startingBankroll")?.value || 0)),
-    fixedStake: Math.max(0, toNumber(document.getElementById("fixedStake")?.value || 0)),
-    bankrollPercent: Math.max(0, toNumber(document.getElementById("bankrollPercent")?.value || 0)) / 100
-  };
-}
-function simulateRows(rows){
-  const s = getStakeSettings();
-  const ordered = [...rows].sort((a,b)=>toDate(a.date)-toDate(b.date));
-  let bankroll = s.startingBankroll;
-  let cumulativeProfit = 0;
-  const simulated = ordered.map(r => {
-    let stake = s.fixedStake;
-    if(s.plan === "proportional") stake = Math.max(0, bankroll * s.bankrollPercent);
-    const simulatedProfit = r.profit * stake;
-    cumulativeProfit += simulatedProfit;
-    bankroll += simulatedProfit;
-    return {...r, stake, simulatedProfit, simulatedCumulative:cumulativeProfit, bankrollAfter:bankroll};
-  });
-  return simulated.sort((a,b)=>toDate(b.date)-toDate(a.date));
 }
 async function loadData(){
   const res = await fetch(CONFIG.CSV_URL, {cache:"no-store"});
@@ -94,28 +72,33 @@ function getFilteredRows(){
 }
 function render(){
   const rows = getFilteredRows();
-  const simulatedRows = simulateRows(rows);
-  renderStats(rows, simulatedRows);
-  renderChart(simulatedRows);
-  renderArchive(simulatedRows);
+  renderStats(rows);
+  renderChart(rows);
+  renderArchive(rows);
 }
-function renderStats(rawRows, simulatedRows){
-  const bets = rawRows.length;
-  const wins = rawRows.filter(r => r.result.includes("WIN")).length;
-  const simulatedProfit = simulatedRows.reduce((sum,r)=>sum+r.simulatedProfit,0);
-  const avgOdd = bets ? rawRows.reduce((sum,r)=>sum+r.odd,0)/bets : 0;
-  const totalStaked = simulatedRows.reduce((sum,r)=>sum+r.stake,0);
-  const roi = totalStaked ? (simulatedProfit / totalStaked) * 100 : 0;
+function renderStats(rows){
+  const bets = rows.length;
+  const wins = rows.filter(r => r.result.includes("WIN")).length;
+  const profit = rows.reduce((sum,r)=>sum+(r.profit * appliedStake),0);
+  const avgOdd = bets ? rows.reduce((sum,r)=>sum+r.odd,0)/bets : 0;
+  const totalStaked = bets * appliedStake;
+  const roi = totalStaked ? (profit / totalStaked) * 100 : 0;
   document.getElementById("bets").textContent = bets.toLocaleString("fr-FR");
   document.getElementById("winrate").textContent = bets ? `${(wins/bets*100).toFixed(2).replace(".", ",")}%` : "—";
   document.getElementById("avgodd").textContent = avgOdd ? avgOdd.toFixed(2).replace(".", ",") : "—";
-  document.getElementById("profit").textContent = amountDisplay(simulatedProfit);
+  document.getElementById("profit").textContent = amountDisplay(profit);
   document.getElementById("roi").textContent = totalStaked ? `${roi.toFixed(2).replace(".", ",")}%` : "—";
 }
-function renderChart(simulatedRows){
-  const ordered = [...simulatedRows].sort((a,b)=>toDate(a.date)-toDate(b.date));
-  const labels = ordered.map(r => dateDisplay(r.date));
-  const values = ordered.map(r => Number(r.simulatedCumulative.toFixed(2)));
+function renderChart(rows){
+  const ordered = [...rows].sort((a,b)=>toDate(a.date)-toDate(b.date));
+  let cumulative = 0;
+  const labels = [];
+  const values = [];
+  ordered.forEach(r => {
+    cumulative += r.profit * appliedStake;
+    labels.push(dateDisplay(r.date));
+    values.push(Number(cumulative.toFixed(2)));
+  });
   const ctx = document.getElementById("profitChart");
   if(chartInstance) chartInstance.destroy();
   chartInstance = new Chart(ctx, {
@@ -128,13 +111,14 @@ function renderChart(simulatedRows){
     }
   });
 }
-function renderArchive(simulatedRows){
+function renderArchive(rows){
   const container = document.getElementById("archiveRows");
-  const visible = simulatedRows.slice(0, CONFIG.MAX_ROWS);
+  const visible = rows.slice(0, CONFIG.MAX_ROWS);
   if(!visible.length){ container.innerHTML = `<div class="loading">No selection found.</div>`; return; }
   container.innerHTML = visible.map(r => {
     const resultClass = r.result.includes("WIN") ? "win" : r.result.includes("LOSS") ? "loss" : "void";
-    const profitClass = r.simulatedProfit >= 0 ? "win" : "loss";
+    const simulatedProfit = r.profit * appliedStake;
+    const profitClass = simulatedProfit >= 0 ? "win" : "loss";
     const match = `${r.team1 || ""} — ${r.team2 || ""}`;
     return `<article class="row">
       <div class="date">${dateDisplay(r.date)}</div>
@@ -142,23 +126,21 @@ function renderArchive(simulatedRows){
       <div class="pick">${r.prediction || "—"}</div>
       <div class="odds">${r.odd ? r.odd.toFixed(2).replace(".", ",") : "—"}</div>
       <div class="result ${resultClass}">${r.result || "—"}</div>
-      <div class="profit ${profitClass}">${amountDisplay(r.simulatedProfit)}</div>
+      <div class="profit ${profitClass}">${amountDisplay(simulatedProfit)}</div>
     </article>`;
   }).join("");
 }
-function updateStakingVisibility(){
-  const plan = document.getElementById("stakingPlan").value;
-  document.getElementById("fixedStakeBox").classList.toggle("hidden", plan !== "fixed");
-  document.getElementById("proportionalStakeBox").classList.toggle("hidden", plan !== "proportional");
+function applyStake(){
+  const value = Math.max(0, toNumber(document.getElementById("stakeInput").value));
+  appliedStake = value || 1;
+  document.getElementById("stakeInput").value = appliedStake;
   render();
 }
 document.getElementById("search").addEventListener("input", render);
 document.getElementById("year").addEventListener("change", render);
 document.getElementById("result").addEventListener("change", render);
-document.getElementById("stakingPlan").addEventListener("change", updateStakingVisibility);
-document.getElementById("startingBankroll").addEventListener("input", render);
-document.getElementById("fixedStake").addEventListener("input", render);
-document.getElementById("bankrollPercent").addEventListener("input", render);
+document.getElementById("applyStake").addEventListener("click", applyStake);
+document.getElementById("stakeInput").addEventListener("keydown", e => { if(e.key === "Enter") applyStake(); });
 loadData().catch(err => {
   console.error(err);
   document.getElementById("archiveRows").innerHTML = `<div class="loading">Unable to load archives. Check the CSV publication URL in config.js.</div>`;

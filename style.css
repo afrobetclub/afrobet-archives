@@ -14,11 +14,11 @@ body{background:var(--bg);color:var(--ink);font-family:"Courier New",Courier,mon
 .stats small{color:var(--muted);text-transform:uppercase;letter-spacing:.09em;font-size:13px}
 .staking{margin:34px 0 24px;border-bottom:1px solid var(--line);padding-bottom:28px}
 .staking-title,.section-label{color:var(--green);font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
-.staking-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.staking-row{display:grid;grid-template-columns:260px 150px;gap:12px;align-items:end}
 .staking label span{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:900;margin-bottom:9px}
-.staking input,.staking select{width:100%}
+button{background:var(--ink);border:1px solid var(--ink);color:var(--bg);font:900 14px/1 "Courier New",Courier,monospace;padding:17px 16px;cursor:pointer;text-transform:uppercase;letter-spacing:.04em}
+button:hover{background:var(--green);border-color:var(--green)}
 .simulation-note{color:var(--muted);font-size:13px;margin:14px 0 0;max-width:760px}
-.hidden{display:none}
 .chart-section{margin:54px 0 42px}
 .chart-box{height:390px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0}
 .toolbar{display:grid;grid-template-columns:1fr 170px 170px;gap:12px;margin:32px 0 24px}
@@ -36,7 +36,7 @@ footer{color:var(--muted);font-size:13px;margin-top:24px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stats article{border-bottom:1px solid var(--line)}
   .stats article:nth-child(even){border-right:0}
-  .staking-grid{grid-template-columns:1fr}
+  .staking-row{grid-template-columns:1fr}
   .toolbar{grid-template-columns:1fr}
   .chart-box{height:310px}
   .archive-head{display:none}

@@ -20,39 +20,21 @@
       <article><span id="bets">—</span><small>Published selections</small></article>
       <article><span id="winrate">—</span><small>Win rate</small></article>
       <article><span id="avgodd">—</span><small>Average odds</small></article>
-      <article><span id="profit">—</span><small>Simulated profit</small></article>
+      <article><span id="profit">—</span><small>Profit</small></article>
       <article><span id="roi">—</span><small>ROI</small></article>
     </section>
 
-    <section class="staking" aria-label="Staking simulation">
+    <section class="staking" aria-label="Stake simulation">
       <div class="staking-title">Simulation</div>
-      <div class="staking-grid">
+      <div class="staking-row">
         <label>
-          <span>Starting bankroll</span>
-          <input id="startingBankroll" type="number" min="0" step="1" value="5000" />
+          <span>Stake size</span>
+          <input id="stakeInput" type="number" min="0" step="1" value="1" />
         </label>
-
-        <label>
-          <span>Staking plan</span>
-          <select id="stakingPlan">
-            <option value="fixed">Fixed stake</option>
-            <option value="proportional">Proportional to bankroll</option>
-            <option value="kelly" disabled>Kelly — needs probability column</option>
-          </select>
-        </label>
-
-        <label id="fixedStakeBox">
-          <span>Stake per selection</span>
-          <input id="fixedStake" type="number" min="0" step="1" value="100" />
-        </label>
-
-        <label id="proportionalStakeBox" class="hidden">
-          <span>Bankroll risk per selection (%)</span>
-          <input id="bankrollPercent" type="number" min="0" step="0.1" value="2" />
-        </label>
+        <button id="applyStake" type="button">Validate</button>
       </div>
       <p class="simulation-note">
-        Historical simulation based on the selected staking plan. No currency is displayed, so every user can project with their own unit.
+        Enter a stake size to simulate historical profit. No currency is displayed.
       </p>
     </section>
 
