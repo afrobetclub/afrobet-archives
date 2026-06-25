@@ -24,7 +24,7 @@ html,body{
 .performance-widget{
   width:100%;
   background:transparent;
-  padding:0 0 56px;
+  padding:0 0 90px;
 }
 
 .kpis{
@@ -90,7 +90,7 @@ html,body{
 .chart-box{
   height:360px;
   background:var(--bg);
-  padding:28px 24px 30px;
+  padding:28px 24px 32px;
 }
 
 .embed-bottom{
@@ -99,7 +99,7 @@ html,body{
   justify-content:space-between;
   gap:30px;
   margin-top:42px;
-  padding-bottom:38px;
+  padding-bottom:70px;
 }
 
 .embed-bottom p{
@@ -116,9 +116,10 @@ html,body{
   justify-content:center;
   min-width:360px;
   min-height:58px;
-  padding:18px 26px;
+  padding:18px 28px;
   border:1px solid var(--green);
-  color:var(--green);
+  background:var(--green);
+  color:var(--bg);
   text-decoration:none;
   text-transform:uppercase;
   letter-spacing:.08em;
@@ -127,7 +128,8 @@ html,body{
 }
 
 .embed-bottom a:hover{
-  background:var(--green);
+  background:var(--ink);
+  border-color:var(--ink);
   color:var(--bg);
 }
 

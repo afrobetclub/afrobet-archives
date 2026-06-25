@@ -183,8 +183,7 @@ function renderDailyChart(rows){
           displayColors:false,
           padding:12,
           callbacks:{
-            title:(items) => items && items.length ? items[0].label : "",
-            label:(context) => `Plus-value : ${context.parsed.y >= 0 ? "+" : ""}${context.parsed.y.toFixed(2).replace(".", ",")}u`
+            label:(context) => `Profit cumulé : ${context.parsed.y >= 0 ? "+" : ""}${context.parsed.y.toFixed(2).replace(".", ",")}u`
           }
         }
       },
