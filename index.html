@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archives — AfroBet Club</title>
+  <meta name="description" content="AfroBet Club archives: historical results, selections, odds, ROI and profit." />
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="brand">AFROBET CLUB</div>
+      <h1>Archives</h1>
+      <p>Complete historical results. Every selection published, tracked and archived from the official AfroBet Club sheet.</p>
+    </header>
+
+    <section class="stats" aria-label="Performance summary">
+      <article><span id="bets">—</span><small>Published selections</small></article>
+      <article><span id="winrate">—</span><small>Win rate</small></article>
+      <article><span id="avgodd">—</span><small>Average odds</small></article>
+      <article><span id="profit">—</span><small>Profit</small></article>
+      <article><span id="roi">—</span><small>ROI</small></article>
+    </section>
+
+    <section class="chart-section" aria-label="Cumulative profit chart">
+      <div class="section-label">Historical curve</div>
+      <div class="chart-box"><canvas id="profitChart"></canvas></div>
+    </section>
+
+    <section class="toolbar" aria-label="Archive filters">
+      <input id="search" type="search" placeholder="Search archives..." />
+      <select id="year"><option value="">All years</option></select>
+      <select id="result">
+        <option value="">All results</option>
+        <option value="WIN">WIN</option>
+        <option value="LOSS">LOSS</option>
+      </select>
+    </section>
+
+    <section class="archive" aria-label="Betting archive">
+      <div class="archive-head">
+        <span>Date</span><span>Match</span><span>Prediction</span><span>Odds</span><span>Result</span><span>Profit</span>
+      </div>
+      <div id="archiveRows" class="archive-rows">
+        <div class="loading">Loading archives…</div>
+      </div>
+    </section>
+
+    <footer>
+      Data loaded from Google Sheets. Showing latest 250 matching selections.
+    </footer>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
