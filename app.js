@@ -2,6 +2,21 @@ let allRows = [];
 let chartInstance = null;
 let appliedStake = 1;
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("search").addEventListener("input", render);
+  document.getElementById("year").addEventListener("change", render);
+  document.getElementById("result").addEventListener("change", render);
+  document.getElementById("applyStake").addEventListener("click", applyStake);
+  document.getElementById("stakeInput").addEventListener("keydown", e => {
+    if(e.key === "Enter") applyStake();
+  });
+
+  loadData().catch(err => {
+    console.error(err);
+    document.getElementById("archiveRows").innerHTML = `<div class="loading">Unable to load archives. Check the CSV publication URL in config.js.</div>`;
+  });
+});
+
 function parseCSV(text){
   const rows = [];
   let row = [], cell = "", quote = false;
@@ -41,11 +56,13 @@ async function loadData(){
   const csv = await res.text();
   const parsed = parseCSV(csv);
   parsed.shift();
+
   allRows = parsed.filter(r => r[0]).map(r => ({
     date:r[0], team1:r[1], score:r[2], team2:r[3], prediction:r[4],
     odd:toNumber(r[5]), result:String(r[6] || "").trim().toUpperCase(),
     profit:toNumber(r[7]), cumulative:toNumber(r[8]), roi:r[9]
   }));
+
   allRows.sort((a,b)=> toDate(b.date) - toDate(a.date));
   populateYears();
   render();
@@ -99,6 +116,7 @@ function renderChart(rows){
     labels.push(dateDisplay(r.date));
     values.push(Number(cumulative.toFixed(2)));
   });
+
   const ctx = document.getElementById("profitChart");
   if(chartInstance) chartInstance.destroy();
   chartInstance = new Chart(ctx, {
@@ -131,17 +149,9 @@ function renderArchive(rows){
   }).join("");
 }
 function applyStake(){
-  const value = Math.max(0, toNumber(document.getElementById("stakeInput").value));
-  appliedStake = value || 1;
+  const raw = document.getElementById("stakeInput").value;
+  const value = Math.max(0, toNumber(raw));
+  appliedStake = value > 0 ? value : 1;
   document.getElementById("stakeInput").value = appliedStake;
   render();
 }
-document.getElementById("search").addEventListener("input", render);
-document.getElementById("year").addEventListener("change", render);
-document.getElementById("result").addEventListener("change", render);
-document.getElementById("applyStake").addEventListener("click", applyStake);
-document.getElementById("stakeInput").addEventListener("keydown", e => { if(e.key === "Enter") applyStake(); });
-loadData().catch(err => {
-  console.error(err);
-  document.getElementById("archiveRows").innerHTML = `<div class="loading">Unable to load archives. Check the CSV publication URL in config.js.</div>`;
-});

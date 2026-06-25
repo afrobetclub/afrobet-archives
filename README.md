@@ -1,7 +1,12 @@
-# AfroBet Club Archives — Simple Stake Simulation
+# AfroBet Club Archives — Simple Stake Fix
 
-Simple version:
-- one stake size field
-- Validate button
-- no currency symbol
-- no unit suffix
+Fixes Validate button and removes unit suffix.
+
+Upload these files to the root of GitHub repository:
+- index.html
+- style.css
+- config.js
+- app.js
+- README.md
+
+After upload, hard refresh the GitHub Pages page with Cmd + Shift + R.
