@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AfroBet Club — Home Embed</title>
-  <link rel="stylesheet" href="./embed.css?v=1" />
+  <title>AfroBet Club — Performance Embed</title>
+  <link rel="stylesheet" href="./embed.css?v=2" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -19,6 +19,10 @@
         <span id="winRate">—</span>
       </article>
       <article>
+        <small>ROI</small>
+        <span id="roi">—</span>
+      </article>
+      <article>
         <small>Number of tips</small>
         <span id="numberTips">—</span>
       </article>
@@ -29,15 +33,13 @@
     </section>
 
     <section class="chart-card" aria-label="AfroBet cumulative profit since 2022">
-      <div class="chart-head">
-        <span>Historical performance since 2022</span>
-      </div>
+      <div class="chart-head">Historical performance since 2022</div>
       <div class="chart-box">
         <canvas id="monthlyChart"></canvas>
       </div>
     </section>
   </main>
 
-  <script src="./embed.js?v=1"></script>
+  <script src="./embed.js?v=2"></script>
 </body>
 </html>

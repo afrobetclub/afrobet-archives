@@ -2,11 +2,11 @@
 
 :root{
   --bg:#F3EEE4;
+  --panel:#EEE7DC;
   --ink:#10100E;
   --muted:#726D65;
   --line:#D6CEC1;
   --green:#123B2A;
-  --panel:#EEE7DC;
 }
 
 *{box-sizing:border-box}
@@ -14,6 +14,9 @@
 html,body{
   margin:0;
   padding:0;
+  width:100%;
+  height:auto;
+  overflow:hidden;
   background:transparent;
   color:var(--ink);
   font-family:"Fira Code","Courier New",monospace;
@@ -27,14 +30,14 @@ html,body{
 
 .kpis{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   border:1px solid var(--line);
   background:transparent;
 }
 
 .kpis article{
-  min-height:132px;
-  padding:30px 34px 26px;
+  min-height:118px;
+  padding:26px 28px 22px;
   border-right:1px solid var(--line);
 }
 
@@ -45,27 +48,27 @@ html,body{
   color:var(--muted);
   text-transform:uppercase;
   letter-spacing:.13em;
-  font-size:14px;
+  font-size:12px;
   line-height:1;
-  margin-bottom:28px;
+  margin-bottom:24px;
   font-weight:500;
 }
 
 .kpis span{
   display:block;
   color:var(--ink);
-  font-size:42px;
-  line-height:44px;
+  font-size:38px;
+  line-height:40px;
   font-weight:700;
   letter-spacing:-.05em;
   white-space:nowrap;
 }
 
 .chart-card{
-  margin-top:54px;
+  margin-top:40px;
   border:1px solid var(--line);
   background:var(--panel);
-  padding:34px 36px 36px;
+  padding:30px 34px 34px;
 }
 
 .chart-head{
@@ -74,27 +77,27 @@ html,body{
   line-height:1.3;
   font-weight:500;
   letter-spacing:.04em;
-  margin-bottom:28px;
+  margin-bottom:24px;
 }
 
 .chart-box{
-  height:380px;
-  background:rgba(255,255,255,.28);
-  padding:28px 30px 18px;
+  height:320px;
+  background:var(--bg);
+  padding:22px 24px 14px;
 }
 
-@media(max-width:900px){
+@media(max-width:1000px){
   .kpis{grid-template-columns:repeat(2,1fr)}
   .kpis article{border-bottom:1px solid var(--line)}
   .kpis article:nth-child(even){border-right:0}
-  .kpis article:nth-child(3),
-  .kpis article:nth-child(4){border-bottom:0}
-  .kpis span{font-size:36px;line-height:38px}
-  .chart-card{margin-top:34px;padding:24px 20px}
-  .chart-box{height:300px;padding:18px 12px 12px}
+  .kpis article:last-child{border-bottom:0}
+  .kpis span{font-size:34px;line-height:36px}
+  .chart-card{margin-top:32px;padding:24px 20px}
+  .chart-box{height:290px;padding:18px 14px 12px}
 }
 
 @media(max-width:520px){
+  html,body{overflow:auto}
   .kpis{grid-template-columns:1fr}
   .kpis article,
   .kpis article:nth-child(even){

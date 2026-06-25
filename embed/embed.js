@@ -3,9 +3,7 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5
 let chartInstance = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadData().catch(error => {
-    console.error(error);
-  });
+  loadData().catch(error => console.error(error));
 });
 
 function parseCSV(text){
@@ -114,9 +112,11 @@ function renderStats(rows){
   const wins = rows.filter(row => row.result.includes("WIN")).length;
   const profit = rows.reduce((sum, row) => sum + row.profit, 0);
   const averageOdds = total ? rows.reduce((sum, row) => sum + row.odd, 0) / total : 0;
+  const roi = total ? (profit / total) * 100 : 0;
 
   document.getElementById("profitTotal").textContent = `${profit >= 0 ? "+" : ""}${formatNumber(profit, 2)}u`;
   document.getElementById("winRate").textContent = `${formatNumber((wins / total) * 100, 2)}%`;
+  document.getElementById("roi").textContent = `${formatNumber(roi, 2)}%`;
   document.getElementById("numberTips").textContent = formatCount(total);
   document.getElementById("averageOdds").textContent = formatNumber(averageOdds, 2);
 }
@@ -154,7 +154,7 @@ function renderMonthlyChart(rows){
       ctx.fillStyle = "#10100E";
       ctx.textAlign = "right";
       ctx.textBaseline = "bottom";
-      ctx.fillText(`${lastValue >= 0 ? "+" : ""}${lastValue.toFixed(2).replace(".", ",")}u`, last.x - 10, last.y - 14);
+      ctx.fillText(`${lastValue >= 0 ? "+" : ""}${lastValue.toFixed(2).replace(".", ",")}u`, last.x - 8, last.y - 14);
       ctx.restore();
     }
   };
@@ -170,10 +170,9 @@ function renderMonthlyChart(rows){
       datasets:[{
         data:values,
         borderColor:"#123B2A",
-        backgroundColor:"#123B2A",
-        borderWidth:1.5,
-        pointRadius:3.5,
-        pointHoverRadius:5,
+        borderWidth:2,
+        pointRadius:0,
+        pointHoverRadius:0,
         tension:0.22,
         fill:false
       }]
@@ -181,18 +180,11 @@ function renderMonthlyChart(rows){
     options:{
       responsive:true,
       maintainAspectRatio:false,
+      animation:false,
       layout:{padding:{top:34,right:28,bottom:4,left:0}},
       plugins:{
         legend:{display:false},
-        tooltip:{
-          backgroundColor:"#10100E",
-          titleColor:"#F3EEE4",
-          bodyColor:"#F3EEE4",
-          displayColors:false,
-          callbacks:{
-            label:(context) => `Profit cumulé: ${context.parsed.y >= 0 ? "+" : ""}${context.parsed.y.toFixed(2).replace(".", ",")}u`
-          }
-        }
+        tooltip:{enabled:false}
       },
       scales:{
         x:{
