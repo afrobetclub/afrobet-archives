@@ -1,49 +1,73 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="fr">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Description" content="AfroBet Club archives: historical results, selections, odds, ROI and profit.">
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p3 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Times; -webkit-text-stroke: #000000}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px Times; -webkit-text-stroke: #000000; background-color: #ffffff}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; -webkit-text-stroke: #000000; background-color: #ffffff}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; -webkit-text-stroke: #000000; min-height: 13.0px}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 12.0px Times; font-kerning: none}
-    span.s3 {font: 11.0px 'Helvetica Neue'; font-kerning: none; color: rgba(0, 0, 0, 0.85); background-color: #b3b3b3; -webkit-text-stroke: 0px rgba(0, 0, 0, 0.85)}
-    span.s4 {font: 11.0px 'Helvetica Neue'; font-kerning: none}
-    span.s5 {font: 11.0px Times; font-kerning: none}
-    span.s6 {font-kerning: none; background-color: #ffffff}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Archives — AfroBet Club</title>
+<meta name="description" content="AfroBet Club archives: historical results, selections, odds, ROI and profit." />
+<link rel="stylesheet" href="./style.css?v=3" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<p class="p1"><span class="s1">AFROBET CLUB</span></p>
-<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px Times; -webkit-text-stroke: #000000"><span class="s1"><b>Archives</b></span></h1>
-<p class="p3"><span class="s1">Complete historical results. Every selection published, tracked and archived from the official AfroBet Club sheet.</span></p>
-<p class="p4"><span class="s2">—</span><span class="s1">Published selections</span></p>
-<p class="p4"><span class="s2">—</span><span class="s1">Win rate</span></p>
-<p class="p4"><span class="s2">—</span><span class="s1">Average odds</span></p>
-<p class="p4"><span class="s2">—</span><span class="s1">Profit</span></p>
-<p class="p4"><span class="s2">—</span><span class="s1">ROI</span></p>
-<p class="p1"><span class="s1">Simulation</span></p>
-<p class="p1"><span class="s1">Stake size </span><span class="s3">Validate</span></p>
-<p class="p3"><span class="s1">Enter a stake size, then validate to simulate historical profit. No currency is displayed.</span></p>
-<p class="p1"><span class="s1">Historical curve</span></p>
-<p class="p5"><span class="s1"></span><br></p>
-<p class="p6"><span class="s1">All years</span></p>
-<p class="p6"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">All results</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s5">WIN</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s5">LOSS</span></p>
-<p class="p8"><span class="s6"><span class="Apple-converted-space">      </span></span></p>
-<p class="p1"><span class="s1">DateMatchPredictionOddsResultProfit</span></p>
-<p class="p1"><span class="s1">Loading archives…</span></p>
-<p class="p1"><span class="s1">Data loaded from Google Sheets.<span class="Apple-converted-space"> </span></span></p>
+<main class="page">
+<header class="hero">
+<div class="brand">AFROBET CLUB</div>
+<h1>Archives</h1>
+<p>Complete historical results. Every selection published, tracked and archived from the official AfroBet Club sheet.</p>
+</header>
+
+<section class="stats">
+<article><span id="bets">—</span><small>Published selections</small></article>
+<article><span id="winrate">—</span><small>Win rate</small></article>
+<article><span id="avgodd">—</span><small>Average odds</small></article>
+<article><span id="profit">—</span><small>Profit</small></article>
+<article><span id="roi">—</span><small>ROI</small></article>
+</section>
+
+<section class="staking">
+<div class="staking-title">Simulation</div>
+<div class="staking-row">
+<label>
+<span>Stake size</span>
+<input id="stakeInput" type="number" min="0" step="1" value="1">
+</label>
+<button id="applyStake" type="button">Validate</button>
+</div>
+<p class="simulation-note">
+Enter a stake size, then validate to simulate historical profit. No currency is displayed.
+</p>
+</section>
+
+<section class="chart-section">
+<div class="section-label">Historical curve</div>
+<div class="chart-box"><canvas id="profitChart"></canvas></div>
+</section>
+
+<section class="toolbar">
+<input id="search" type="search" placeholder="Search archives...">
+<select id="year"><option value="">All years</option></select>
+<select id="result">
+<option value="">All results</option>
+<option value="WIN">WIN</option>
+<option value="LOSS">LOSS</option>
+</select>
+</section>
+
+<section class="archive">
+<div class="archive-head">
+<span>Date</span><span>Match</span><span>Prediction</span><span>Odds</span><span>Result</span><span>Profit</span>
+</div>
+<div id="archiveRows" class="archive-rows">
+<div class="loading">Loading archives…</div>
+</div>
+</section>
+
+<footer>
+Complete historical track record. All published selections are displayed.
+</footer>
+</main>
+
+<script src="./config.js?v=3"></script>
+<script src="./app.js?v=3"></script>
 </body>
 </html>
