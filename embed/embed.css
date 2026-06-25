@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap');
+
+:root{
+  --bg:#F3EEE4;
+  --ink:#10100E;
+  --muted:#726D65;
+  --line:#D6CEC1;
+  --green:#123B2A;
+  --panel:#EEE7DC;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  padding:0;
+  background:transparent;
+  color:var(--ink);
+  font-family:"Fira Code","Courier New",monospace;
+}
+
+.performance-widget{
+  width:100%;
+  background:transparent;
+  padding:0;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line);
+  background:transparent;
+}
+
+.kpis article{
+  min-height:132px;
+  padding:30px 34px 26px;
+  border-right:1px solid var(--line);
+}
+
+.kpis article:last-child{border-right:0}
+
+.kpis small{
+  display:block;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  font-size:14px;
+  line-height:1;
+  margin-bottom:28px;
+  font-weight:500;
+}
+
+.kpis span{
+  display:block;
+  color:var(--ink);
+  font-size:42px;
+  line-height:44px;
+  font-weight:700;
+  letter-spacing:-.05em;
+  white-space:nowrap;
+}
+
+.chart-card{
+  margin-top:54px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  padding:34px 36px 36px;
+}
+
+.chart-head{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.3;
+  font-weight:500;
+  letter-spacing:.04em;
+  margin-bottom:28px;
+}
+
+.chart-box{
+  height:380px;
+  background:rgba(255,255,255,.28);
+  padding:28px 30px 18px;
+}
+
+@media(max-width:900px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .kpis article{border-bottom:1px solid var(--line)}
+  .kpis article:nth-child(even){border-right:0}
+  .kpis article:nth-child(3),
+  .kpis article:nth-child(4){border-bottom:0}
+  .kpis span{font-size:36px;line-height:38px}
+  .chart-card{margin-top:34px;padding:24px 20px}
+  .chart-box{height:300px;padding:18px 12px 12px}
+}
+
+@media(max-width:520px){
+  .kpis{grid-template-columns:1fr}
+  .kpis article,
+  .kpis article:nth-child(even){
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+  .kpis article:last-child{border-bottom:0}
+}
