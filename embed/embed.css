@@ -2,7 +2,7 @@
 
 :root{
   --bg:#F3EEE4;
-  --panel:#EEE7DC;
+  --panel:#F3EEE4;
   --ink:#10100E;
   --muted:#726D65;
   --line:#D6CEC1;
@@ -24,7 +24,7 @@ html,body{
 .performance-widget{
   width:100%;
   background:transparent;
-  padding:0 0 28px;
+  padding:0 0 56px;
 }
 
 .kpis{
@@ -66,7 +66,7 @@ html,body{
 .chart-card{
   margin-top:40px;
   border:1px solid var(--line);
-  background:var(--panel);
+  background:var(--bg);
   padding:30px 34px 34px;
 }
 
@@ -88,9 +88,9 @@ html,body{
 }
 
 .chart-box{
-  height:350px;
+  height:360px;
   background:var(--bg);
-  padding:24px 24px 22px;
+  padding:28px 24px 30px;
 }
 
 .embed-bottom{
@@ -98,8 +98,8 @@ html,body{
   align-items:center;
   justify-content:space-between;
   gap:30px;
-  margin-top:34px;
-  padding-bottom:10px;
+  margin-top:42px;
+  padding-bottom:38px;
 }
 
 .embed-bottom p{
