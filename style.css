@@ -10,7 +10,11 @@
 }
 
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%}
+
+html,body{
+  margin:0;
+  min-height:100%;
+}
 
 body{
   background:var(--bg);
@@ -69,7 +73,9 @@ body{
   letter-spacing:-.055em;
 }
 
-.site-brand:hover{color:var(--green)}
+.site-brand:hover{
+  color:var(--green);
+}
 
 .site-baseline{
   color:var(--muted);
@@ -110,7 +116,9 @@ body{
   background:var(--bg);
 }
 
-.stats article:last-child{border-right:0}
+.stats article:last-child{
+  border-right:0;
+}
 
 .stats span{
   display:block;
@@ -136,7 +144,8 @@ body{
   padding-bottom:28px;
 }
 
-.staking-title,.section-label{
+.staking-title,
+.section-label{
   color:var(--green);
   font-size:13px;
   font-weight:700;
@@ -173,7 +182,10 @@ button{
   letter-spacing:.04em;
 }
 
-button:hover{background:var(--green);border-color:var(--green)}
+button:hover{
+  background:var(--green);
+  border-color:var(--green);
+}
 
 .simulation-note{
   color:var(--muted);
@@ -182,7 +194,9 @@ button:hover{background:var(--green);border-color:var(--green)}
   max-width:760px;
 }
 
-.chart-section{margin:54px 0 42px}
+.chart-section{
+  margin:54px 0 42px;
+}
 
 .chart-box{
   height:390px;
@@ -199,7 +213,8 @@ button:hover{background:var(--green);border-color:var(--green)}
   margin:32px 0 24px;
 }
 
-input,select{
+input,
+select{
   background:transparent;
   border:1px solid var(--line);
   color:var(--ink);
@@ -209,14 +224,18 @@ input,select{
   outline:0;
 }
 
-input:focus,select:focus{border-color:var(--green)}
+input:focus,
+select:focus{
+  border-color:var(--green);
+}
 
 .archive{
   border-top:1px solid var(--line);
   background:var(--bg);
 }
 
-.archive-head,.row{
+.archive-head,
+.row{
   display:grid;
   grid-template-columns:155px 1.45fr 1.05fr 105px 105px 105px;
   gap:18px;
@@ -239,15 +258,40 @@ input:focus,select:focus{border-color:var(--green)}
   font-size:14px;
 }
 
-.date{color:var(--muted)}
-.match strong{display:block}
-.score{color:var(--muted);margin-top:4px}
-.result,.profit,.odds{font-weight:700}
-.odds,.result,.profit{text-align:left;padding-left:6px}
+.date{
+  color:var(--muted);
+}
+
+.match strong{
+  display:block;
+}
+
+.score{
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.result,
+.profit,
+.odds{
+  font-weight:700;
+}
+
+.odds,
+.result,
+.profit{
+  text-align:left;
+  padding-left:6px;
+}
+
 .win{color:var(--green)}
 .loss{color:var(--loss)}
 .void{color:var(--muted)}
-.loading{color:var(--muted);padding:28px 18px}
+
+.loading{
+  color:var(--muted);
+  padding:28px 18px;
+}
 
 footer{
   color:var(--muted);
@@ -264,7 +308,9 @@ footer{
     flex-wrap:wrap;
   }
 
-  .page{padding-top:70px}
+  .page{
+    padding-top:70px;
+  }
 
   .site-header{
     align-items:flex-start;
@@ -278,15 +324,33 @@ footer{
     white-space:normal;
   }
 
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .stats article{border-bottom:1px solid var(--line)}
-  .stats article:nth-child(even){border-right:0}
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
 
-  .staking-row{grid-template-columns:1fr}
-  .toolbar{grid-template-columns:1fr}
-  .chart-box{height:310px}
+  .stats article{
+    border-bottom:1px solid var(--line);
+  }
 
-  .archive-head{display:none}
+  .stats article:nth-child(even){
+    border-right:0;
+  }
+
+  .staking-row{
+    grid-template-columns:1fr;
+  }
+
+  .toolbar{
+    grid-template-columns:1fr;
+  }
+
+  .chart-box{
+    height:310px;
+  }
+
+  .archive-head{
+    display:none;
+  }
 
   .row{
     grid-template-columns:1fr;
@@ -310,5 +374,9 @@ footer{
   .result:before{content:"Result"}
   .profit:before{content:"Profit"}
 
-  .odds,.result,.profit{padding-left:0}
+  .odds,
+  .result,
+  .profit{
+    padding-left:0;
+  }
 }
