@@ -1,12 +1,18 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
-body{margin:0;background:transparent;font-family:'Fira Code',monospace;color:#111}
-.tips-table{width:100%}
-.tip-row{display:grid;grid-template-columns:150px 1.4fr 1fr 90px;gap:28px;align-items:center;
-padding:18px 0;border-bottom:1px solid #d6cec1}
-.date{color:#726d65;font-size:14px}
-.match{font-size:18px;font-weight:700}
-.pick{font-size:17px}
-.odd{font-size:17px;font-weight:700;color:#123b2a}
-.loading{padding:20px 0;color:#726d65}
-@media(max-width:900px){.tip-row{grid-template-columns:1fr;gap:8px}}
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap');
+:root{--bg:#F4EFE4;--ink:#10100E;--muted:#726D65;--line:#D6CEC1;--green:#123B2A}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;background:transparent;color:var(--ink);font-family:"Fira Code","Courier New",monospace;overflow:hidden}
+.free-tips-widget{width:100%;background:transparent;padding:0 0 30px}
+.tips-table{width:100%;border-top:1px solid var(--line)}
+.tip-row{display:grid;grid-template-columns:150px 1.4fr 1fr 90px;gap:28px;align-items:center;min-height:74px;padding:18px 0;border-bottom:1px solid var(--line);background:transparent}
+.date{color:var(--muted);font-size:14px;font-weight:500}
+.match{color:var(--ink);font-size:18px;font-weight:700;line-height:1.15}
+.pick{color:var(--ink);font-size:17px;font-weight:400;line-height:1.25}
+.odd{color:var(--green);font-size:17px;font-weight:700}
+.loading{color:var(--muted);padding:24px 0;font-size:15px}
+@media(max-width:900px){
+ html,body{overflow:auto}
+ .tip-row{grid-template-columns:1fr;gap:7px;padding:20px 0}
+ .date,.pick,.odd{font-size:15px}
+ .match{font-size:18px}
+}

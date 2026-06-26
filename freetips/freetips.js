@@ -1,7 +1,8 @@
-
 const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5Yxf8zKEeQvOb7aWKnxoZ-XTuPfBn_tOVyPQjQdE-kcBcOGRzQ-Iy_1FaDvGoPjV_/pub?gid=1888219940&single=true&output=csv";
-fetch(CSV_URL).then(r=>r.text()).then(t=>{
-const rows=t.trim().split(/\r?\n/).slice(1).map(l=>l.split(","));
-rows.sort((a,b)=>new Date(b[0].split(/[./]/).reverse().join("-"))-new Date(a[0].split(/[./]/).reverse().join("-")));
-document.getElementById("tipsRows").innerHTML=rows.slice(0,12).map(r=>`<div class="tip-row"><div class=date>${r[0]}</div><div class=match>${r[1]}</div><div class=pick>${r[2]}</div><div class=odd>${r[3]}</div></div>`).join("");
-}).catch(()=>document.getElementById("tipsRows").innerHTML="Erreur");
+const MAX_ROWS=12;
+document.addEventListener("DOMContentLoaded",()=>loadTips().catch(()=>{tipsRows.innerHTML='<div class="loading">Impossible de charger les sélections.</div>'}));
+function parseCSV(text){const rows=[];let row=[],cell="",quote=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'&&quote&&n==='"'){cell+='"';i++;continue}if(c==='"'){quote=!quote;continue}if(c===","&&!quote){row.push(cell);cell="";continue}if((c==="\n"||c==="\r")&&!quote){if(cell||row.length){row.push(cell);rows.push(row);row=[];cell=""}if(c==="\r"&&n==="\n")i++;continue}cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
+function toDate(v){const s=String(v??"").trim();const m=s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})$/);if(m)return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));return new Date(s)}
+function formatDate(v){const d=toDate(v);if(isNaN(d))return String(v??"");return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"}).replaceAll("/",".")}
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+async function loadTips(){const r=await fetch(CSV_URL,{cache:"no-store"});const parsed=parseCSV(await r.text());parsed.shift();const rows=parsed.filter(x=>x[0]||x[1]||x[2]||x[3]).map(x=>({date:x[0],match:x[1],pick:x[2],odd:String(x[3]??"").trim().replace(",",".")})).sort((a,b)=>toDate(b.date)-toDate(a.date)).slice(0,MAX_ROWS);tipsRows.innerHTML=rows.map(r=>`<article class="tip-row"><div class="date">${esc(formatDate(r.date))}</div><div class="match">${esc(r.match)}</div><div class="pick">${esc(r.pick)}</div><div class="odd">${esc(r.odd)}</div></article>`).join("")}
