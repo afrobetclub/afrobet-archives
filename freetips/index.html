@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>AfroBet Club — Free Tips Embed</title>
-  <link rel="stylesheet" href="./freetips.css?v=11">
+  <link rel="stylesheet" href="./freetips.css?v=12">
 </head>
 <body>
   <main class="free-tips-widget">
@@ -16,7 +16,7 @@
   </main>
 
   <script>
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5Yxf8zKEeQvOb7aWKnxoZ-XTuPfBn_tOVyPQjQdE-kcBcOGRzQ-Iy_1FaDvGoPjV_/pub?gid=1888219940&single=true&output=csv";
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/153DThkI_nS-bVtcRhbd4sMQ8bBGG2wjFZTUfYMhz_4w/export?format=csv&gid=1888219940";
   const MAX_ROWS = 12;
   const HEIGHT_MESSAGE_TYPE = "AFROBET_FREETIPS_HEIGHT";
 
@@ -160,14 +160,21 @@
 
   async function loadTips() {
     const response = await fetch(CSV_URL + "&cacheBust=" + Date.now(), {
-      cache: "no-store"
+      cache: "no-store",
+      redirect: "follow"
     });
 
     if (!response.ok) {
       throw new Error("CSV fetch failed: " + response.status);
     }
 
-    const parsed = parseCSV(await response.text());
+    const csvText = await response.text();
+
+    if (csvText.trim().startsWith("<!DOCTYPE") || csvText.trim().startsWith("<html")) {
+      throw new Error("Google returned HTML instead of CSV. Check sharing/public access.");
+    }
+
+    const parsed = parseCSV(csvText);
     parsed.shift();
 
     const rows = parsed
