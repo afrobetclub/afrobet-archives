@@ -153,8 +153,31 @@ canvas{
   .chart-card{padding:22px 20px 0}
   .chart-head{flex-direction:column;gap:8px}
   .chart-box{height:310px;padding:18px 18px 42px}
-  .embed-bottom{flex-direction:column;align-items:flex-start}
-  .embed-bottom a{min-width:100%;width:100%}
+
+  .embed-bottom{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:18px;
+    padding:18px 18px 22px;
+  }
+
+  .embed-bottom p{
+    margin:0;
+    max-width:100%;
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  .embed-bottom a{
+    width:100%;
+    min-width:0;
+    min-height:48px;
+    padding:14px 16px;
+    font-size:12px;
+    letter-spacing:.06em;
+    transform:none;
+  }
 }
 
 @media(max-width:520px){
