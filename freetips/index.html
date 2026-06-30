@@ -1,1 +1,51 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AfroBet Club — Free Tips Embed</title><link rel="stylesheet" href="./freetips.css?v=8"></head><body><main class="free-tips-widget"><section class="tips-table"><div id="tipsRows"><div class="loading">Chargement…</div></div></section></main><script src="./freetips.js?v=8"></script></body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AfroBet Club — Free Tips Embed</title><link rel="stylesheet" href="./freetips.css?v=8"></head><body><main class="free-tips-widget"><section class="tips-table"><div id="tipsRows"><div class="loading">Chargement…</div></div></section></main><script src="./freetips.js?v=8"></script>
+<script>
+(function () {
+  const MESSAGE_TYPE = "AFROBET_FREETIPS_HEIGHT";
+
+  function getHeight() {
+    return Math.ceil(Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    ));
+  }
+
+  function sendHeight() {
+    window.parent.postMessage({
+      type: MESSAGE_TYPE,
+      height: getHeight()
+    }, "*");
+  }
+
+  function scheduleHeight() {
+    sendHeight();
+    requestAnimationFrame(sendHeight);
+    setTimeout(sendHeight,100);
+    setTimeout(sendHeight,400);
+    setTimeout(sendHeight,1000);
+  }
+
+  window.addEventListener("load", scheduleHeight);
+  window.addEventListener("resize", scheduleHeight);
+  document.addEventListener("DOMContentLoaded", scheduleHeight);
+
+  if ("ResizeObserver" in window) {
+    const ro = new ResizeObserver(scheduleHeight);
+    document.addEventListener("DOMContentLoaded", () => {
+      ro.observe(document.body);
+      ro.observe(document.documentElement);
+    });
+  }
+
+  if ("MutationObserver" in window) {
+    const mo = new MutationObserver(scheduleHeight);
+    document.addEventListener("DOMContentLoaded", () => {
+      mo.observe(document.body,{childList:true,subtree:true,characterData:true});
+    });
+  }
+})();
+</script>
+
+</body></html>
