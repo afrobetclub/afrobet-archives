@@ -1,1 +1,191 @@
-const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5Yxf8zKEeQvOb7aWKnxoZ-XTuPfBn_tOVyPQjQdE-kcBcOGRzQ-Iy_1FaDvGoPjV_/pub?gid=1888219940&single=true&output=csv";const MAX_ROWS=12;document.addEventListener("DOMContentLoaded",()=>{loadTips().catch(()=>{document.getElementById("tipsRows").innerHTML='<div class="loading">Impossible de charger les sélections.</div>'})});function parseCSV(t){const r=[];let row=[],c="",q=false;for(let i=0;i<t.length;i++){const x=t[i],n=t[i+1];if(x=='"'&&q&&n=='"'){c+='"';i++;continue}if(x=='"'){q=!q;continue}if(x===","&&!q){row.push(c);c="";continue}if((x==="\n"||x==="\r")&&!q){if(c||row.length){row.push(c);r.push(row);row=[];c=""}if(x==="\r"&&n==="\n")i++;continue}c+=x}if(c||row.length){row.push(c);r.push(row)}return r}function toDate(v){const s=String(v??"").trim();const m=s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})$/);if(m)return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));return new Date(s)}function formatDate(v){const d=toDate(v);if(isNaN(d))return String(v??"");return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"}).replaceAll("/",".")}function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}async function loadTips(){const res=await fetch(CSV_URL,{cache:"no-store"});const parsed=parseCSV(await res.text());parsed.shift();const rows=parsed.filter(row=>row[0]||row[1]||row[2]||row[3]).map(row=>({date:row[0],match:row[1],pick:row[2],odd:String(row[3]??"").trim().replace(",","." )})).sort((a,b)=>toDate(b.date)-toDate(a.date)).slice(0,MAX_ROWS);document.getElementById("tipsRows").innerHTML=rows.map(row=>`<article class="tip-row"><div class="date">${esc(formatDate(row.date))}</div><div class="match">${esc(row.match)}</div><div class="pick">${esc(row.pick)}</div><div class="odd">${esc(row.odd)}</div></article>`).join("")}
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5Yxf8zKEeQvOb7aWKnxoZ-XTuPfBn_tOVyPQjQdE-kcBcOGRzQ-Iy_1FaDvGoPjV_/pub?gid=1888219940&single=true&output=csv";
+const MAX_ROWS = 12;
+const HEIGHT_MESSAGE_TYPE = "AFROBET_FREETIPS_HEIGHT";
+
+document.addEventListener("DOMContentLoaded", () => {
+  scheduleHeight();
+  loadTips().catch((error) => {
+    console.error("AfroBet FreeTips loading error:", error);
+    const container = document.getElementById("tipsRows");
+    if (container) {
+      container.innerHTML = '<div class="loading">Impossible de charger les sélections.</div>';
+    }
+    scheduleHeight();
+  });
+});
+
+window.addEventListener("load", scheduleHeight);
+window.addEventListener("resize", scheduleHeight);
+
+if ("ResizeObserver" in window) {
+  document.addEventListener("DOMContentLoaded", () => {
+    const resizeObserver = new ResizeObserver(scheduleHeight);
+    resizeObserver.observe(document.body);
+    resizeObserver.observe(document.documentElement);
+  });
+}
+
+if ("MutationObserver" in window) {
+  document.addEventListener("DOMContentLoaded", () => {
+    const mutationObserver = new MutationObserver(scheduleHeight);
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  });
+}
+
+function getHeight() {
+  return Math.ceil(Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight
+  ));
+}
+
+function sendHeight() {
+  window.parent.postMessage({
+    type: HEIGHT_MESSAGE_TYPE,
+    height: getHeight()
+  }, "*");
+}
+
+function scheduleHeight() {
+  sendHeight();
+  requestAnimationFrame(sendHeight);
+  setTimeout(sendHeight, 100);
+  setTimeout(sendHeight, 400);
+  setTimeout(sendHeight, 1000);
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quote = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const current = text[i];
+    const next = text[i + 1];
+
+    if (current === '"' && quote && next === '"') {
+      cell += '"';
+      i++;
+      continue;
+    }
+
+    if (current === '"') {
+      quote = !quote;
+      continue;
+    }
+
+    if (current === "," && !quote) {
+      row.push(cell);
+      cell = "";
+      continue;
+    }
+
+    if ((current === "\n" || current === "\r") && !quote) {
+      if (cell || row.length) {
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = "";
+      }
+      if (current === "\r" && next === "\n") i++;
+      continue;
+    }
+
+    cell += current;
+  }
+
+  if (cell || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+function toDate(value) {
+  const stringValue = String(value ?? "").trim();
+  const match = stringValue.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})$/);
+
+  if (match) {
+    return new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+  }
+
+  return new Date(stringValue);
+}
+
+function formatDate(value) {
+  const date = toDate(value);
+  if (isNaN(date)) return String(value ?? "");
+
+  return date
+    .toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    })
+    .replaceAll("/", ".");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+async function loadTips() {
+  const response = await fetch(`${CSV_URL}&cacheBust=${Date.now()}`, {
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(`CSV fetch failed: ${response.status}`);
+  }
+
+  const parsed = parseCSV(await response.text());
+  parsed.shift();
+
+  const rows = parsed
+    .filter((row) => row[0] || row[1] || row[2] || row[3])
+    .map((row) => ({
+      date: row[0],
+      match: row[1],
+      pick: row[2],
+      odd: String(row[3] ?? "").trim().replace(",", ".")
+    }))
+    .filter((row) => row.date || row.match || row.pick || row.odd)
+    .sort((a, b) => toDate(b.date) - toDate(a.date))
+    .slice(0, MAX_ROWS);
+
+  const container = document.getElementById("tipsRows");
+
+  if (!container) return;
+
+  if (!rows.length) {
+    container.innerHTML = '<div class="loading">Aucune sélection disponible.</div>';
+    scheduleHeight();
+    return;
+  }
+
+  container.innerHTML = rows
+    .map((row) => `
+      <article class="tip-row">
+        <div class="date">${escapeHTML(formatDate(row.date))}</div>
+        <div class="match">${escapeHTML(row.match)}</div>
+        <div class="pick">${escapeHTML(row.pick)}</div>
+        <div class="odd">${escapeHTML(row.odd)}</div>
+      </article>
+    `)
+    .join("");
+
+  scheduleHeight();
+}
