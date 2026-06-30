@@ -2,5 +2,6 @@ Replace these two files in /embed/ on GitHub:
 - index.html
 - embed.css
 
-Important:
-index.html now loads embed.css?v=14 to force cache refresh.
+V15:
+- Forces mobile padding-bottom to 36px under the CTA button.
+- Bumps index.html cache version to embed.css?v=15.
