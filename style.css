@@ -30,3 +30,30 @@ button{background:var(--ink);border:1px solid var(--ink);color:var(--bg);font:70
  .page{width:calc(100% - 36px);padding:28px 0 56px}.site-header{gap:16px;margin-bottom:34px;padding-bottom:14px}.site-baseline{text-align:right;font-size:10px;white-space:normal}.site-brand{font-size:14px}.site-kicker{font-size:10px}.hero h1{font-size:clamp(56px,20vw,82px)}.hero p{font-size:14px;margin:22px 0 30px}.stats{grid-template-columns:repeat(2,1fr)}.stats article{min-height:110px;border-bottom:1px solid var(--line)}.stats article:nth-child(even){border-right:0}.stats article:last-child{grid-column:1/-1;border-bottom:0}.stats span{font-size:34px}.chart-section{margin-top:38px}.chart-box{height:310px;padding:18px 0}.staking{grid-template-columns:1fr;gap:18px;padding:22px 0}.staking-row{grid-template-columns:1fr 140px}.toolbar{grid-template-columns:1fr}.archive-head{display:none}.row{grid-template-columns:1fr;gap:6px;padding:19px 0}.row>div:before{display:block;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:10px;margin-bottom:2px}.date:before{content:"Date"}.match:before{content:"Match"}.pick:before{content:"Prediction"}.odds:before{content:"Odds"}.result:before{content:"Result"}.profit:before{content:"Profit"}.odds,.result,.profit{padding-left:0}
 }
 @media(max-width:520px){.site-baseline{display:none}.site-header{justify-content:flex-start}.staking-row{grid-template-columns:1fr}.staking-row button{width:100%}.stats article{padding-right:10px}.stats small{font-size:9px}.chart-box{height:270px}}
+
+
+/* v16 — Sticky global navigation, matching the Framer site */
+.site-header,
+header.site-header,
+.main-header,
+header.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg, #f3ede1);
+}
+
+/* Keep the header visually stable while the page scrolls */
+.site-header::after,
+header.site-header::after,
+.main-header::after,
+header.main-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: rgba(17, 17, 15, 0.10);
+  pointer-events: none;
+}
