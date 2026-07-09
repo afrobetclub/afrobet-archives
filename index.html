@@ -5,80 +5,86 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Archives — AfroBet Club</title>
 <meta name="description" content="AfroBet Club archives: historical results, selections, odds, ROI and profit." />
-<link rel="stylesheet" href="./style.css?v=11" />
+<link rel="stylesheet" href="./style.css?v=12" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-<nav class="side-nav" aria-label="Main navigation">
+<header class="global-header">
+  <a class="global-brand" href="https://www.afrobet.club/">AfroBet Club</a>
+  <nav class="desktop-nav" aria-label="Main navigation">
+    <a href="https://www.afrobet.club/">HOME</a>
+    <a href="https://www.afrobet.club/learn">ACADEMY</a>
+    <a href="https://www.afrobet.club/#premium">CLUB PREMIUM</a>
+    <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">FREE TELEGRAM</a>
+  </nav>
+  <a class="archives-cta" href="https://archives.afrobet.club/" aria-current="page">ARCHIVES <span>→</span></a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu"><span></span><span></span></button>
+</header>
+<nav id="mobileMenu" class="mobile-menu" aria-label="Mobile navigation">
   <a href="https://www.afrobet.club/">HOME</a>
-  <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">TELEGRAM</a>
-  <a href="https://archives.afrobet.club/">ARCHIVES</a>
+  <a href="https://www.afrobet.club/learn">ACADEMY</a>
+  <a href="https://www.afrobet.club/#premium">CLUB PREMIUM</a>
+  <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">FREE TELEGRAM</a>
+  <a href="https://archives.afrobet.club/" aria-current="page">ARCHIVES →</a>
 </nav>
 
 <main class="page">
 <header class="site-header">
-  <a class="site-brand" href="https://www.afrobet.club/">AfroBet Club</a>
-  <div class="site-baseline">Football Research Club / depuis 2022</div>
+  <div>
+    <a class="site-brand" href="https://www.afrobet.club/">AfroBet Club</a>
+    <div class="site-kicker">Football Research Club / depuis 2022</div>
+  </div>
+  <div class="site-baseline">Private football analysis / tracked results</div>
 </header>
 
 <header class="hero">
-<h1>Archives</h1>
-<p>Complete historical results. Every selection published, tracked and archived from the official AfroBet Club sheet.</p>
+  <h1>Archives</h1>
+  <p>Complete historical results. Every selection published, tracked and archived from the official AfroBet Club sheet.</p>
 </header>
 
 <section class="stats">
-<article><span id="bets">—</span><small>Published selections</small></article>
-<article><span id="winrate">—</span><small>Win rate</small></article>
-<article><span id="avgodd">—</span><small>Average odds</small></article>
-<article><span id="profit">—</span><small>Profit</small></article>
-<article><span id="roi">—</span><small>ROI</small></article>
-</section>
-
-<section class="staking">
-<div class="staking-title">Simulation</div>
-<div class="staking-row">
-<label>
-<span>Stake size</span>
-<input id="stakeInput" type="number" min="0" step="1" value="1">
-</label>
-<button id="applyStake" type="button">Validate</button>
-</div>
-<p class="simulation-note">
-Enter a stake size, then validate to simulate historical profit. No currency is displayed.
-</p>
+  <article><span id="bets">—</span><small>Published selections</small></article>
+  <article><span id="winrate">—</span><small>Win rate</small></article>
+  <article><span id="avgodd">—</span><small>Average odds</small></article>
+  <article><span id="profit">—</span><small>Profit</small></article>
+  <article><span id="roi">—</span><small>ROI</small></article>
 </section>
 
 <section class="chart-section">
-<div class="section-label">Historical curve</div>
-<div class="chart-box"><canvas id="profitChart"></canvas></div>
+  <div class="section-label">Historical curve</div>
+  <div class="chart-box"><canvas id="profitChart"></canvas></div>
 </section>
 
-<section class="toolbar">
-<input id="search" type="search" placeholder="Search archives...">
-<select id="year"><option value="">All years</option></select>
-<select id="result">
-<option value="">All results</option>
-<option value="WIN">WIN</option>
-<option value="LOSS">LOSS</option>
-</select>
+<section class="staking" aria-label="Stake simulation">
+  <div class="staking-copy">
+    <div class="staking-title">Simulate your stake</div>
+    <p>Recalculate the historical curve, KPIs and archive profit with your own stake size. No currency is displayed.</p>
+  </div>
+  <div class="staking-row">
+    <label>
+      <span>Stake size</span>
+      <input id="stakeInput" type="number" min="0" step="1" value="1">
+    </label>
+    <button id="applyStake" type="button">Validate →</button>
+  </div>
+</section>
+
+<section class="toolbar" aria-label="Archive filters">
+  <input id="search" type="search" placeholder="Search archives...">
+  <select id="month"><option value="">All months</option></select>
+  <select id="year"><option value="">All years</option></select>
 </section>
 
 <section class="archive">
-<div class="archive-head">
-<span>Date</span><span>Match</span><span>Prediction</span><span>Odds</span><span>Result</span><span>Profit</span>
-</div>
-<div id="archiveRows" class="archive-rows">
-<div class="loading">Loading archives…</div>
-</div>
+  <div class="archive-head">
+    <span>Date</span><span>Match</span><span>Prediction</span><span>Odds</span><span>Result</span><span>Profit</span>
+  </div>
+  <div id="archiveRows" class="archive-rows"><div class="loading">Loading archives…</div></div>
 </section>
 
-<footer>
-Complete historical track record. All published selections are displayed.
-</footer>
+<footer>Complete historical track record. All published selections are displayed.</footer>
 </main>
-
-<script src="./config.js?v=11"></script>
-<script src="./app.js?v=11"></script>
+<script src="./config.js?v=12"></script>
+<script src="./app.js?v=12"></script>
 </body>
 </html>

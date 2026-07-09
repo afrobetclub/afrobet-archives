@@ -4,8 +4,15 @@ let appliedStake = 1;
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("search").addEventListener("input", render);
+  document.getElementById("month").addEventListener("change", render);
   document.getElementById("year").addEventListener("change", render);
-  document.getElementById("result").addEventListener("change", render);
+  const menuToggle = document.querySelector(".menu-toggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  menuToggle.addEventListener("click", () => {
+    const open = menuToggle.getAttribute("aria-expanded") === "true";
+    menuToggle.setAttribute("aria-expanded", String(!open));
+    mobileMenu.classList.toggle("open", !open);
+  });
   document.getElementById("applyStake").addEventListener("click", applyStake);
   document.getElementById("stakeInput").addEventListener("keydown", e => {
     if(e.key === "Enter") applyStake();
@@ -64,8 +71,19 @@ async function loadData(){
   }));
 
   allRows.sort((a,b)=> toDate(b.date) - toDate(a.date));
+  populateMonths();
   populateYears();
   render();
+}
+function populateMonths(){
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const select = document.getElementById("month");
+  monthNames.forEach((name, index) => {
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = name;
+    select.appendChild(option);
+  });
 }
 function populateYears(){
   const years = [...new Set(allRows.map(r => toDate(r.date).getFullYear()).filter(Boolean))].sort((a,b)=>b-a);
@@ -79,12 +97,14 @@ function populateYears(){
 }
 function getFilteredRows(){
   const q = document.getElementById("search").value.trim().toLowerCase();
+  const month = document.getElementById("month").value;
   const year = document.getElementById("year").value;
-  const result = document.getElementById("result").value;
   return allRows.filter(r => {
     const haystack = `${r.date} ${r.team1} ${r.score} ${r.team2} ${r.prediction} ${r.result}`.toLowerCase();
-    const y = String(toDate(r.date).getFullYear());
-    return (!q || haystack.includes(q)) && (!year || y === year) && (!result || r.result === result);
+    const d = toDate(r.date);
+    const y = String(d.getFullYear());
+    const m = String(d.getMonth());
+    return (!q || haystack.includes(q)) && (!month || m === month) && (!year || y === year);
   });
 }
 function render(){
