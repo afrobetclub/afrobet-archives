@@ -1,5 +1,25 @@
 const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5Yxf8zKEeQvOb7aWKnxoZ-XTuPfBn_tOVyPQjQdE-kcBcOGRzQ-Iy_1FaDvGoPjV_/pub?gid=622475547&single=true&output=csv";
-let chartInstance=null;document.addEventListener("DOMContentLoaded",()=>{loadData().catch(console.error)});
+let chartInstance=null;
+let loadPromise=null;
+
+function initEmbed(){
+  if(window.__AFROBET_EMBED_INITIALIZED__) return;
+  window.__AFROBET_EMBED_INITIALIZED__=true;
+
+  if(!loadPromise){
+    loadPromise=loadData().catch(error=>{
+      window.__AFROBET_EMBED_INITIALIZED__=false;
+      loadPromise=null;
+      throw error;
+    });
+  }
+}
+
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",initEmbed,{once:true});
+}else{
+  initEmbed();
+}
 function parseCSV(t){const r=[];let row=[],c="",q=false;for(let i=0;i<t.length;i++){const x=t[i],n=t[i+1];if(x=='"'&&q&&n=='"'){c+='"';i++;continue}if(x=='"'){q=!q;continue}if(x==","&&!q){row.push(c);c="";continue}if((x=="\n"||x=="\r")&&!q){if(c||row.length){row.push(c);r.push(row);row=[];c=""}if(x=="\r"&&n=="\n")i++;continue}c+=x}if(c||row.length){row.push(c);r.push(row)}return r}
 function toNumber(v){return Number(String(v??"").replace(/\s/g,"").replace("%","").replace(",","."))||0}
 function toDate(v){const s=String(v??"").trim();const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));return new Date(s)}
