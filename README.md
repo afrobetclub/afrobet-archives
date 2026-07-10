@@ -10,4 +10,3 @@ Upload these files to the root of GitHub repository:
 - README.md
 
 After upload, hard refresh the GitHub Pages page with Cmd + Shift + R.
-deploy retry
