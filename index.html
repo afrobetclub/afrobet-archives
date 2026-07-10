@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Archives — AfroBet Club</title>
 <meta name="description" content="AfroBet Club archives: historical results, selections, odds, ROI and profit." />
-<link rel="stylesheet" href="./style.css?v=13" />
+<link rel="stylesheet" href="./style.css?v=14" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -86,5 +86,29 @@
 </main>
 <script src="./config.js?v=13"></script>
 <script src="./app.js?v=13"></script>
+
+<script>
+(() => {
+  const toggle = document.querySelector('.menu-toggle');
+  const menu = document.getElementById('mobileMenu');
+
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+
+  menu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
