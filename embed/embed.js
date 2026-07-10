@@ -2,16 +2,55 @@ const CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRJH1dw4bmYwPC5Yx
 let chartInstance=null;
 let loadPromise=null;
 
+function sendHeight(){
+  const height=Math.ceil(document.documentElement.getBoundingClientRect().height);
+  if(window.parent){
+    window.parent.postMessage(
+      {source:"afrobet-archives",height},
+      "*"
+    );
+  }
+}
+
+function scheduleHeightReport(){
+  sendHeight();
+  requestAnimationFrame(()=>{
+    sendHeight();
+    requestAnimationFrame(sendHeight);
+  });
+  setTimeout(sendHeight,150);
+  setTimeout(sendHeight,500);
+}
+
+window.addEventListener("message",event=>{
+  if(event.data&&event.data.type==="request-height"){
+    scheduleHeightReport();
+  }
+});
+
+if(document.readyState==="complete"||document.readyState==="interactive"){
+  scheduleHeightReport();
+}else{
+  document.addEventListener("DOMContentLoaded",scheduleHeightReport,{once:true});
+}
+
+if(typeof ResizeObserver!=="undefined"){
+  const resizeObserver=new ResizeObserver(()=>scheduleHeightReport());
+  resizeObserver.observe(document.documentElement);
+}
+
 function initEmbed(){
   if(window.__AFROBET_EMBED_INITIALIZED__) return;
   window.__AFROBET_EMBED_INITIALIZED__=true;
 
   if(!loadPromise){
-    loadPromise=loadData().catch(error=>{
-      window.__AFROBET_EMBED_INITIALIZED__=false;
-      loadPromise=null;
-      throw error;
-    });
+    loadPromise=loadData()
+      .then(()=>scheduleHeightReport())
+      .catch(error=>{
+        window.__AFROBET_EMBED_INITIALIZED__=false;
+        loadPromise=null;
+        console.error(error);
+      });
   }
 }
 
@@ -50,4 +89,4 @@ function renderStats(rows){
   document.getElementById("averageOdds").textContent =
     formatNumber(avg,2);
 }
-function renderDailyChart(rows){let cumulative=0;const labels=[],values=[],years=[];rows.forEach(row=>{cumulative+=row.profit;labels.push(dateLabel(row.date));values.push(Number(cumulative.toFixed(2)));years.push(row.date.getFullYear())});const firstIndexByYear={};years.forEach((year,index)=>{if(firstIndexByYear[year]===undefined)firstIndexByYear[year]=index});const lastValue=values[values.length-1];const lastPointLabelPlugin={id:"lastPointLabel",afterDatasetsDraw(chart){const{ctx}=chart,meta=chart.getDatasetMeta(0),last=meta.data[meta.data.length-1];if(!last)return;ctx.save();ctx.font="700 17px Fira Code, monospace";ctx.fillStyle="#10100E";ctx.textAlign="right";ctx.textBaseline="bottom";ctx.fillText(`${lastValue>=0?"+":""}${lastValue.toFixed(2).replace(".",",")}u`,last.x-8,last.y-14);ctx.restore()}};const yearLabelPlugin={id:"yearLabels",afterDraw(chart){const{ctx,chartArea,scales}=chart,x=scales.x;ctx.save();ctx.font="500 13px Fira Code, monospace";ctx.fillStyle="#726D65";ctx.textAlign="center";ctx.textBaseline="top";Object.keys(firstIndexByYear).forEach(year=>{const index=firstIndexByYear[year],px=x.getPixelForValue(index);if(px>=chartArea.left&&px<=chartArea.right)ctx.fillText(year,Math.max(px,chartArea.left+24),chartArea.bottom+16)});ctx.restore()}};const ctx=document.getElementById("dailyChart");if(chartInstance)chartInstance.destroy();chartInstance=new Chart(ctx,{type:"line",data:{labels,datasets:[{label:"Profit cumulé",data:values,borderColor:"#123B2A",borderWidth:2,pointRadius:0,pointHoverRadius:4,pointHitRadius:12,tension:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},animation:false,layout:{padding:{top:34,right:28,bottom:38,left:18}},plugins:{legend:{display:false},tooltip:{enabled:true,backgroundColor:"#10100E",titleColor:"#F4EFE4",bodyColor:"#F4EFE4",displayColors:false,padding:12,callbacks:{title:(items)=>items&&items.length?items[0].label:"",label:(context)=>`Plus-value : ${context.parsed.y>=0?"+":""}${context.parsed.y.toFixed(2).replace(".",",")}u`}}},scales:{x:{grid:{display:false},ticks:{display:false},border:{display:false}},y:{grid:{color:"#D6CEC1"},ticks:{display:false},border:{display:false}}}},plugins:[lastPointLabelPlugin,yearLabelPlugin]})}
+function renderDailyChart(rows){let cumulative=0;const labels=[],values=[],years=[];rows.forEach(row=>{cumulative+=row.profit;labels.push(dateLabel(row.date));values.push(Number(cumulative.toFixed(2)));years.push(row.date.getFullYear())});const firstIndexByYear={};years.forEach((year,index)=>{if(firstIndexByYear[year]===undefined)firstIndexByYear[year]=index});const lastValue=values[values.length-1];const lastPointLabelPlugin={id:"lastPointLabel",afterDatasetsDraw(chart){const{ctx}=chart,meta=chart.getDatasetMeta(0),last=meta.data[meta.data.length-1];if(!last)return;ctx.save();ctx.font="700 17px Fira Code, monospace";ctx.fillStyle="#10100E";ctx.textAlign="right";ctx.textBaseline="bottom";ctx.fillText(`${lastValue>=0?"+":""}${lastValue.toFixed(2).replace(".",",")}u`,last.x-8,last.y-14);ctx.restore()}};const yearLabelPlugin={id:"yearLabels",afterDraw(chart){const{ctx,chartArea,scales}=chart,x=scales.x;ctx.save();ctx.font="500 13px Fira Code, monospace";ctx.fillStyle="#726D65";ctx.textAlign="center";ctx.textBaseline="top";Object.keys(firstIndexByYear).forEach(year=>{const index=firstIndexByYear[year],px=x.getPixelForValue(index);if(px>=chartArea.left&&px<=chartArea.right)ctx.fillText(year,Math.max(px,chartArea.left+24),chartArea.bottom+16)});ctx.restore()}};const ctx=document.getElementById("dailyChart");if(chartInstance)chartInstance.destroy();chartInstance=new Chart(ctx,{type:"line",data:{labels,datasets:[{label:"Profit cumulé",data:values,borderColor:"#123B2A",borderWidth:2,pointRadius:0,pointHoverRadius:4,pointHitRadius:12,tension:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},animation:false,layout:{padding:{top:34,right:28,bottom:38,left:18}},plugins:{legend:{display:false},tooltip:{enabled:true,backgroundColor:"#10100E",titleColor:"#F4EFE4",bodyColor:"#F4EFE4",displayColors:false,padding:12,callbacks:{title:(items)=>items&&items.length?items[0].label:"",label:(context)=>`Plus-value : ${context.parsed.y>=0?"+":""}${context.parsed.y.toFixed(2).replace(".",",")}u`}}},scales:{x:{grid:{display:false},ticks:{display:false},border:{display:false}},y:{grid:{color:"#D6CEC1"},ticks:{display:false},border:{display:false}}}},plugins:[lastPointLabelPlugin,yearLabelPlugin]});scheduleHeightReport()}
