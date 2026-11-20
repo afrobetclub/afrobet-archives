@@ -86,5 +86,19 @@
 </main>
 <script src="./config.js?v=13"></script>
 <script src="./app.js?v=13"></script>
+<!-- Assistance AfroBet Club : bouton Telegram -->
+<a class="ab-aide" href="https://t.me/AfroBetClubBot" target="_blank" rel="noopener" aria-label="Besoin d'aide ? Contactez-nous sur Telegram (s'ouvre dans Telegram)" title="Besoin d'aide ? Contactez-nous sur Telegram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21.6 4.3 18.4 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.2 13.1l-4.7-1.5c-1-.3-1-1 .2-1.5L20.2 3c.9-.3 1.6.2 1.4 1.3z"/></svg><span class="ab-aide-bulle" aria-hidden="true">Besoin d'aide ? Contactez-nous sur Telegram</span></a>
+<style>
+.ab-aide{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:2147483000;width:46px;height:46px;border-radius:50%;background:#113a24;color:#f4f2ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(244,242,236,.35),0 2px 10px rgba(16,16,14,.18);text-decoration:none;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,background-color .15s ease}
+.ab-aide:hover{background:#10100e;transform:translateY(-1px)}
+.ab-aide:focus-visible{outline:2px solid #10100e;outline-offset:3px}
+.ab-aide svg{width:21px;height:21px;margin-left:-2px}
+.ab-aide-bulle{position:absolute;right:56px;top:50%;transform:translateY(-50%);white-space:nowrap;background:#10100e;color:#f4f2ec;font:500 12px/1.2 "Fira Code",ui-monospace,monospace;padding:8px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s ease}
+.ab-aide:hover .ab-aide-bulle,.ab-aide:focus-visible .ab-aide-bulle{opacity:1}
+@media (hover:none){.ab-aide-bulle{display:none}}
+@media (prefers-reduced-motion:reduce){.ab-aide,.ab-aide-bulle{transition:none}}
+@media print{.ab-aide{display:none}}
+</style>
+<script>if (window.self !== window.top) { var b = document.querySelector(".ab-aide"); if (b) b.remove(); }</script>
 </body>
 </html>
