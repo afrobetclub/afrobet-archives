@@ -1,0 +1,23 @@
+name: Bilan public (pages statiques)
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tools/build_bilan.py
+      - name: Publier si changement
+        run: |
+          git config user.name "AfroBet Club"
+          git config user.email "contact@afrobet.club"
+          git add bilan sitemap.xml robots.txt
+          git diff --cached --quiet || git commit -m "Bilan public : mise à jour automatique"
+          git push
