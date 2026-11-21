@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadData().catch(err => {
     console.error(err);
-    document.getElementById("archiveRows").innerHTML = `<div class="loading">Unable to load archives. Check the CSV publication URL in config.js.</div>`;
+    document.getElementById("archiveRows").innerHTML = `<div class="loading">Archives momentanément indisponibles. Le bilan statique reste consultable : <a href="/bilan/">/bilan/</a></div>`;
   });
 });
 
@@ -76,7 +76,7 @@ async function loadData(){
   render();
 }
 function populateMonths(){
-  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const monthNames = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
   const select = document.getElementById("month");
   monthNames.forEach((name, index) => {
     const option = document.createElement("option");
@@ -144,7 +144,7 @@ function renderChart(rows){
     data:{labels,datasets:[{data:values,borderColor:"#123b2a",borderWidth:2,pointRadius:0,tension:.24}]},
     options:{
       responsive:true, maintainAspectRatio:false, interaction:{mode:"index", intersect:false},
-      plugins:{legend:{display:false},tooltip:{backgroundColor:"#10100e",titleColor:"#f3eee4",bodyColor:"#f3eee4",borderColor:"#d6cec1",borderWidth:1,displayColors:false,callbacks:{label:(ctx)=>` Profit: ${amountDisplay(ctx.parsed.y)}`}}},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:"#10100e",titleColor:"#f3eee4",bodyColor:"#f3eee4",borderColor:"#d6cec1",borderWidth:1,displayColors:false,callbacks:{label:(ctx)=>` Unités : ${amountDisplay(ctx.parsed.y)}`}}},
       scales:{x:{ticks:{color:"#69645d",maxTicksLimit:6},grid:{display:false}},y:{ticks:{color:"#69645d"},grid:{color:"#d6cec1"}}}
     }
   });
@@ -152,7 +152,7 @@ function renderChart(rows){
 function renderArchive(rows){
   const container = document.getElementById("archiveRows");
   const visible = rows.slice(0, CONFIG.MAX_ROWS);
-  if(!visible.length){ container.innerHTML = `<div class="loading">No selection found.</div>`; return; }
+  if(!visible.length){ container.innerHTML = `<div class="loading">Aucune sélection trouvée.</div>`; return; }
   container.innerHTML = visible.map(r => {
     const resultClass = r.result.includes("WIN") ? "win" : r.result.includes("LOSS") ? "loss" : "void";
     const simulatedProfit = r.profit * appliedStake;
@@ -163,7 +163,7 @@ function renderArchive(rows){
       <div class="match"><strong>${match}</strong><div class="score">${r.score || ""}</div></div>
       <div class="pick">${r.prediction || "—"}</div>
       <div class="odds">${r.odd ? r.odd.toFixed(2).replace(".", ",") : "—"}</div>
-      <div class="result ${resultClass}">${r.result || "—"}</div>
+      <div class="result ${resultClass}">${r.result.includes("WIN") ? "GAGNÉ" : r.result.includes("LOSS") ? "PERDU" : (r.result || "—")}</div>
       <div class="profit ${profitClass}">${amountDisplay(simulatedProfit)}</div>
     </article>`;
   }).join("");

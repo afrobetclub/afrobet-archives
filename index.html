@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Archives — AfroBet Club</title>
-<meta name="description" content="AfroBet Club archives: historical results, selections, odds, ROI and profit." />
-<link rel="stylesheet" href="./style.css?v=13" />
+<title>Archives AfroBet Club : toutes les sélections foot, gagnées comme perdues</title>
+<meta name="description" content="Archives publiques d'AfroBet Club : toutes les sélections foot publiées depuis 2022, gagnées comme perdues, avec cotes et résultats. Bilan détaillé mois par mois." />
+<link rel="canonical" href="https://archives.afrobet.club/" />
+<link rel="stylesheet" href="./style.css?v=14" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <header class="global-header">
   <a class="global-brand" href="https://www.afrobet.club/">AfroBet Club</a>
-  <nav class="desktop-nav" aria-label="Main navigation">
-    <a href="https://www.afrobet.club/">HOME</a>
-    <a href="https://www.afrobet.club/learn">ACADEMY</a>
+  <nav class="desktop-nav" aria-label="Navigation principale">
+    <a href="https://www.afrobet.club/">ACCUEIL</a>
+    <a href="https://www.afrobet.club/learn">ACADÉMIE</a>
     <a href="https://www.afrobet.club/#premium">CLUB PREMIUM</a>
-    <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">FREE TELEGRAM</a>
+    <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">TELEGRAM GRATUIT</a>
   </nav>
   <a class="archives-cta" href="https://archives.afrobet.club/" aria-current="page">ARCHIVES <span>→</span></a>
-  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu"><span></span><span></span></button>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Ouvrir le menu"><span></span><span></span></button>
 </header>
-<nav id="mobileMenu" class="mobile-menu" aria-label="Mobile navigation">
-  <a href="https://www.afrobet.club/">HOME</a>
-  <a href="https://www.afrobet.club/learn">ACADEMY</a>
+<nav id="mobileMenu" class="mobile-menu" aria-label="Navigation mobile">
+  <a href="https://www.afrobet.club/">ACCUEIL</a>
+  <a href="https://www.afrobet.club/learn">ACADÉMIE</a>
   <a href="https://www.afrobet.club/#premium">CLUB PREMIUM</a>
-  <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">FREE TELEGRAM</a>
+  <a href="https://t.me/afrobetclub" target="_blank" rel="noopener">TELEGRAM GRATUIT</a>
   <a href="https://archives.afrobet.club/" aria-current="page">ARCHIVES →</a>
 </nav>
 
@@ -32,60 +33,61 @@
 <header class="site-header">
   <div>
     <a class="site-brand" href="https://www.afrobet.club/">AfroBet Club</a>
-    <div class="site-kicker">Football Research Club / depuis 2022</div>
+    <div class="site-kicker">Club d'analyse foot / depuis 2022</div>
   </div>
-  <div class="site-baseline">Private football analysis / tracked results</div>
+  <div class="site-baseline">Analyses foot / résultats suivis</div>
 </header>
 
 <header class="hero">
   <h1>Archives</h1>
-  <p>Complete historical results. Every selection published, tracked and archived from the official AfroBet Club sheet.</p>
+  <p>Tout l'historique : chaque sélection publiée est suivie et archivée depuis la feuille officielle d'AfroBet Club, gagnée comme perdue. <a href="/bilan/">Voir le bilan mois par mois →</a></p>
+  <noscript><p><a href="/bilan/">Bilan complet, mois par mois (version sans JavaScript)</a></p></noscript>
 </header>
 
 <section class="stats">
-  <article><span id="bets">—</span><small>Published selections</small></article>
-  <article><span id="winrate">—</span><small>Win rate</small></article>
-  <article><span id="avgodd">—</span><small>Average odds</small></article>
-  <article><span id="profit">—</span><small>Profit</small></article>
+  <article><span id="bets">—</span><small>Sélections publiées</small></article>
+  <article><span id="winrate">—</span><small>Taux de réussite</small></article>
+  <article><span id="avgodd">—</span><small>Cote moyenne</small></article>
+  <article><span id="profit">—</span><small>Bilan (unités)</small></article>
   <article><span id="roi">—</span><small>ROI</small></article>
 </section>
 
 <section class="chart-section">
-  <div class="section-label">Historical curve</div>
+  <div class="section-label">Courbe historique</div>
   <div class="chart-box"><canvas id="profitChart"></canvas></div>
 </section>
 
-<section class="staking" aria-label="Stake simulation">
+<section class="staking" aria-label="Simulation de mise">
   <div class="staking-copy">
-    <div class="staking-title">Simulate your stake</div>
-    <p>Recalculate the historical curve, KPIs and archive profit with your own stake size. No currency is displayed.</p>
+    <div class="staking-title">Simuler une mise</div>
+    <p>Recalcule la courbe et les indicateurs passés avec une autre taille de mise. Aucune devise affichée. Résultats passés : ils ne préjugent pas des résultats futurs.</p>
   </div>
   <div class="staking-row">
     <label>
-      <span>Stake size</span>
+      <span>Taille de mise</span>
       <input id="stakeInput" type="number" min="0" step="1" value="1">
     </label>
-    <button id="applyStake" type="button">Validate →</button>
+    <button id="applyStake" type="button">Valider →</button>
   </div>
 </section>
 
-<section class="toolbar" aria-label="Archive filters">
-  <input id="search" type="search" placeholder="Search archives...">
-  <select id="month"><option value="">All months</option></select>
-  <select id="year"><option value="">All years</option></select>
+<section class="toolbar" aria-label="Filtres des archives">
+  <input id="search" type="search" placeholder="Rechercher une équipe, une date…">
+  <select id="month"><option value="">Tous les mois</option></select>
+  <select id="year"><option value="">Toutes les années</option></select>
 </section>
 
 <section class="archive">
   <div class="archive-head">
-    <span>Date</span><span>Match</span><span>Prediction</span><span>Odds</span><span>Result</span><span>Profit</span>
+    <span>Date</span><span>Match</span><span>Sélection</span><span>Cote</span><span>Résultat</span><span>Unités</span>
   </div>
-  <div id="archiveRows" class="archive-rows"><div class="loading">Loading archives…</div></div>
+  <div id="archiveRows" class="archive-rows"><div class="loading">Chargement des archives…</div></div>
 </section>
 
-<footer>Complete historical track record. All published selections are displayed.</footer>
+<footer>Historique complet : toutes les sélections publiées sont affichées, pertes comprises. Réservé aux 18 ans et plus, jouez de façon responsable. <a href="/bilan/">Bilan mois par mois</a></footer>
 </main>
-<script src="./config.js?v=13"></script>
-<script src="./app.js?v=13"></script>
+<script src="./config.js?v=14"></script>
+<script src="./app.js?v=14"></script>
 <!-- Assistance AfroBet Club : bouton Telegram -->
 <a class="ab-aide" href="https://t.me/AfroBetClubBot" target="_blank" rel="noopener" aria-label="Besoin d'aide ? Contactez-nous sur Telegram (s'ouvre dans Telegram)" title="Besoin d'aide ? Contactez-nous sur Telegram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21.6 4.3 18.4 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.2 13.1l-4.7-1.5c-1-.3-1-1 .2-1.5L20.2 3c.9-.3 1.6.2 1.4 1.3z"/></svg><span class="ab-aide-bulle" aria-hidden="true">Besoin d'aide ? Contactez-nous sur Telegram</span></a>
 <style>

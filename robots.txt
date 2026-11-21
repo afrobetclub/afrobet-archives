@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /embed/
+Disallow: /freetips/
+
+Sitemap: https://archives.afrobet.club/sitemap.xml
